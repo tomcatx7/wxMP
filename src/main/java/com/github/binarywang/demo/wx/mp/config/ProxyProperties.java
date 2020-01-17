@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 
 
 @Data
-@ConfigurationProperties(prefix = "proxy")
-@Component
+@Deprecated
 public class ProxyProperties {
     /**
      * http代理url

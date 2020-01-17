@@ -37,6 +37,15 @@ public class WxMpProperties {
          * 设置微信公众号的EncodingAESKey
          */
         private String aesKey;
+        /**
+         * 设置微信公众号的HttpProxyHost
+         */
+        private String HttpProxyHost;
+        /**
+         * 设置微信公众号的HttpProxyPort
+         */
+        private String HttpProxyPort;
+
     }
 
     @Override

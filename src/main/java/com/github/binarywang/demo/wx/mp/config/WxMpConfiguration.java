@@ -9,6 +9,7 @@ import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,7 @@ import static me.chanjar.weixin.common.api.WxConsts.EventType;
 import static me.chanjar.weixin.common.api.WxConsts.EventType.SUBSCRIBE;
 import static me.chanjar.weixin.common.api.WxConsts.EventType.UNSUBSCRIBE;
 import static me.chanjar.weixin.common.api.WxConsts.XmlMsgType;
-import static me.chanjar.weixin.common.api.WxConsts.XmlMsgType.EVENT;
+import static me.chanjar.weixin.common.api.WxConsts.XmlMsgType.*;
 import static me.chanjar.weixin.mp.constant.WxMpEventConstants.CustomerService.*;
 import static me.chanjar.weixin.mp.constant.WxMpEventConstants.POI_CHECK_NOTIFY;
 
@@ -40,6 +41,7 @@ public class WxMpConfiguration {
     private final LocationHandler locationHandler;
     private final MenuHandler menuHandler;
     private final MsgHandler msgHandler;
+    private final ImageHandler imageHandler;
     private final UnsubscribeHandler unsubscribeHandler;
     private final SubscribeHandler subscribeHandler;
     private final ScanHandler scanHandler;
@@ -61,6 +63,11 @@ public class WxMpConfiguration {
                 configStorage.setSecret(a.getSecret());
                 configStorage.setToken(a.getToken());
                 configStorage.setAesKey(a.getAesKey());
+                if (!StringUtils.isEmpty(a.getHttpProxyHost())
+                    && !StringUtils.isEmpty(a.getHttpProxyPort())) {
+                    configStorage.setHttpProxyHost(a.getHttpProxyHost());
+                    configStorage.setHttpProxyPort(Integer.valueOf(a.getHttpProxyPort()));
+                }
                 return configStorage;
             }).collect(Collectors.toMap(WxMpDefaultConfigImpl::getAppId, a -> a, (o, n) -> o)));
         return service;
@@ -106,8 +113,11 @@ public class WxMpConfiguration {
         // 扫码事件
         newRouter.rule().async(false).msgType(EVENT).event(EventType.SCAN).handler(this.scanHandler).end();
 
-        // 默认
-        newRouter.rule().async(false).handler(this.msgHandler).end();
+        // 接受文字
+        newRouter.rule().async(false).msgType(TEXT).handler(this.msgHandler).end();
+
+        // 接受图片事件
+        newRouter.rule().async(false).msgType(IMAGE).handler(this.imageHandler).end();
 
         return newRouter;
     }

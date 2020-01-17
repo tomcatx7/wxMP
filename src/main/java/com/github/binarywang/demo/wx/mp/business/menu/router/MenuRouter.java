@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 菜单路由
+ * 文字菜单路由，只负责处理文字内容
  * 根据菜单项，路由到相应的模块去处理业务。
  */
 public class MenuRouter {
@@ -69,7 +69,13 @@ public class MenuRouter {
                 session.setUsedMenu(MenuType.CHATMENU.value());
                 //第一次选择菜单，欢迎语句
                 return new TextBuilder().build("嗨,现在可以和我聊天啦!", wxMpXmlMessage, weixinService);
-            } else {
+            }
+            //图片处理功能暂时作废
+            else if (content.contains(MenuType.YANZHIMENU.value())){
+                session.setUsedMenu(MenuType.YANZHIMENU.value());
+                //第一次选择菜单，欢迎语句
+                return new TextBuilder().build("嗨,现在可以发一张自拍，测测你颜值吧", wxMpXmlMessage, weixinService);
+            }else {
                 return res;
             }
         }
