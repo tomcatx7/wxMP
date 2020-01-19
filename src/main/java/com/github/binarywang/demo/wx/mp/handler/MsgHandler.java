@@ -16,9 +16,6 @@ import java.util.Map;
 
 import static me.chanjar.weixin.common.api.WxConsts.XmlMsgType;
 
-/**
- * @author Binary Wang(https://github.com/binarywang)
- */
 @Slf4j
 @Component
 public class MsgHandler extends AbstractHandler {
@@ -49,7 +46,6 @@ public class MsgHandler extends AbstractHandler {
 //                    .fromUser(wxMessage.getToUser())
 //                    .toUser(wxMessage.getFromUser()).build();
 //            }
-//
 //        } catch (WxErrorException e) {
 //            e.printStackTrace();
 //        }

@@ -88,7 +88,6 @@ public class MenuRouter {
                 res = rule.service(wxMpXmlMessage, weixinService, session);
             }
         }
-
         return res;
     }
 }

@@ -5,12 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.HttpConnection;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.Map;
 
 @AllArgsConstructor
 @Data
@@ -20,9 +18,6 @@ public class IHttpclient {
     private final WxMpProperties properties;
 
     private static final int TIMEOUT = 10000;
-
-    //public static Connection connection;
-
 
     public byte[] getBytes(String url, int timeout) throws IOException {
         byte[] bytes = null;
