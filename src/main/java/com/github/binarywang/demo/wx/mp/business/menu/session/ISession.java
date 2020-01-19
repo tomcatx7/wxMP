@@ -38,7 +38,7 @@ public class ISession {
     }
 
     public boolean isVaild() {
-        return (lastActivityTime - createTime) < expireTime;
+        return (System.currentTimeMillis() - lastActivityTime) < expireTime;
     }
 
     public void setExpireTime(long time) {

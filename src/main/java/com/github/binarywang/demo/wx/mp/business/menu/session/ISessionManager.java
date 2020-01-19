@@ -3,6 +3,10 @@ package com.github.binarywang.demo.wx.mp.business.menu.session;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * 自定义会话管理器
  */
@@ -22,6 +26,28 @@ public class ISessionManager {
      * 记录链表长度
      */
     private int size;
+
+    public ISessionManager() {
+        //检查session是否失效（失效时间为30min），失效后删除session
+        ISessionManager sessionManager = this;
+        final long interval = 60 * 1000;//1min
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                checkSession(sessionManager);
+            }
+        }, new Date(), interval);
+    }
+
+    /**
+     * 首先检查最尾端session
+     */
+    private void checkSession(ISessionManager sessionManager) {
+        Node x = sessionManager.tail;
+        if (x != null && !x.session.isVaild()) {
+            expireSession();
+        }
+    }
 
     public static class Node {
         private ISession session;
@@ -62,7 +88,7 @@ public class ISessionManager {
     /**
      * 采用LRU算法淘汰掉末端session
      */
-    private void expireSession() {
+    private synchronized void expireSession() {
         if (tail == null)
             return;
         Node last = tail;
@@ -73,10 +99,10 @@ public class ISessionManager {
         if (pre == null) {
             last = null;
         } else {
-            tail = pre;
             pre.next = null;
             last = null;
         }
+        tail = pre;
         size--;
     }
 
@@ -155,13 +181,9 @@ public class ISessionManager {
 
     public static void main(String[] args) {
         ISessionManager iSessionManager = new ISessionManager();
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 1; i++) {
             ISession iSession = iSessionManager.getSession((i) + "");
             System.out.println("成功添加session:" + iSession.getSessionID());
-            System.out.println("当前session数:" + iSessionManager.sessionSize());
-            if (i == 4) {
-                iSessionManager.refreshSession(i + "");
-            }
             System.out.println(iSession);
         }
 
