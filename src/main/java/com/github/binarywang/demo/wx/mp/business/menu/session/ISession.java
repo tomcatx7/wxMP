@@ -41,8 +41,5 @@ public class ISession {
         return (System.currentTimeMillis() - lastActivityTime) < expireTime;
     }
 
-    public void setExpireTime(long time) {
-        this.expireTime = time;
-    }
 
 }

@@ -27,8 +27,20 @@ public class ISessionManager {
      */
     private int size;
 
+    public static class Node {
+        private ISession session;
+        private Node pre;
+        private Node next;
+
+        public Node(ISession session, Node pre, Node next) {
+            this.session = session;
+            this.pre = pre;
+            this.next = next;
+        }
+    }
+
     public ISessionManager() {
-        //检查session是否失效（失效时间为30min），失效后删除session
+        //开启一个定时任务，检查session是否失效（失效时间为30min），失效后删除session
         ISessionManager sessionManager = this;
         final long interval = 60 * 1000;//1min
         new Timer().schedule(new TimerTask() {
@@ -49,17 +61,6 @@ public class ISessionManager {
         }
     }
 
-    public static class Node {
-        private ISession session;
-        private Node pre;
-        private Node next;
-
-        public Node(ISession session, Node pre, Node next) {
-            this.session = session;
-            this.pre = pre;
-            this.next = next;
-        }
-    }
 
     public ISession getSession(String openID) {
         ISession session = findSession(openID);
@@ -160,7 +161,6 @@ public class ISessionManager {
             last.next = newNode;
         size++;
     }
-
 
     private ISession findSession(String sessionID) {
         Node node = head;
