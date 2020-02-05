@@ -180,6 +180,7 @@ public class ISessionManager {
     }
 
     public static void main(String[] args) {
+
         ISessionManager iSessionManager = new ISessionManager();
         for (int i = 0; i < 1; i++) {
             ISession iSession = iSessionManager.getSession((i) + "");

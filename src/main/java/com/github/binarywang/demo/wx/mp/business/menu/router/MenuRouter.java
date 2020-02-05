@@ -71,11 +71,11 @@ public class MenuRouter {
                 return new TextBuilder().build("嗨,现在可以和我聊天啦!", wxMpXmlMessage, weixinService);
             }
             //图片处理功能暂时作废
-            else if (content.contains(MenuType.YANZHIMENU.value())){
+            else if (content.contains(MenuType.YANZHIMENU.value())) {
                 session.setUsedMenu(MenuType.YANZHIMENU.value());
                 //第一次选择菜单，欢迎语句
                 return new TextBuilder().build("嗨,现在可以发一张自拍，测测你颜值吧", wxMpXmlMessage, weixinService);
-            }else {
+            } else {
                 return res;
             }
         }

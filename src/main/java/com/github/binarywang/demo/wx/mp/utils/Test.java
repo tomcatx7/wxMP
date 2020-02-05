@@ -9,12 +9,19 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Test {
 
     public static void main(String[] args) throws IOException {
+
         String filePath = "C:\\N-5CG63036DL-Data\\xiaozhon\\Desktop\\test.txt";
         Document doc = Jsoup.parse(new File(filePath), "gbk");
         Elements foodEls = doc.getElementsByClass("cp_meiri_li");
@@ -38,7 +45,6 @@ public class Test {
             item.setUrl(foodInfo.getHref());
             System.out.println(foodInfo);
         }
-
     }
 
 }
